@@ -42,6 +42,19 @@ exports.create = (req, res) => {
         });
     } 
 
+    // Retrieve and return all users from the database.
+    exports.findAll = (req, res) => {
+        User.find()
+        .then(user => {
+            res.send(user);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving users."
+            });
+        });
+    };
+
+
     exports.login = (res,req ) => {
         User.find({email: req.body.email })
         .exec()
@@ -82,20 +95,24 @@ exports.create = (req, res) => {
                 return res.status(404).send({
                     message: "User not found! " + req.params.userID
                 });
-            }else{
-                res.send({message: "Successfully deleted user"});
             }
+                res.send({message: "Successfully deleted user"});
+            
         
         }).catch(err => {
-            
-            res.status(500).send({
-                error:err
+            if(err.kind === 'userID' || err.name === 'NotFound') {
+                return res.status(404).send({
+                    message: "User not found with id " + req.params.userID
+                });                
+            }
+            return res.status(500).send({
+                message: "Could not delete user with id " + req.params.userID
             });
         });
     };
             
     
         
-        
+
 
 

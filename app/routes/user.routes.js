@@ -4,6 +4,10 @@ module.exports = (app) => {
     // Create a new account
     app.post('/signup', account.create);
 
+    
+    // Retrieve all Notes
+    app.get('/user', account.findAll);
+
     //Login user
     app.post('/login', account.login);
 
