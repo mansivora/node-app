@@ -1,0 +1,6 @@
+{
+    "env": {
+        "MONGO_ATLAS_PW": "pFQuCbXK7fC6PKRc",
+        "JWT_KEY": "riverdale"
+    }
+}

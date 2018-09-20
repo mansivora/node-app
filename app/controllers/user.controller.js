@@ -1,5 +1,6 @@
 const User = require('../models/user.model');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // Create account and Save
 exports.create = (req, res) => {
@@ -71,8 +72,19 @@ exports.create = (req, res) => {
                     });
                 }
                 if(result){
+                    const token = jwt.sign(
+                        {
+                        email:user[0].email,
+                        usertype:user[0].usertype
+                        }, 
+                        process.env.JWT_KEY,
+                        {
+                            expiresIn: "1h"
+                        }
+                    );
                     return res.status(200).send({
-                        message: "Auth successfull"
+                        message: "Auth successfull",
+                        token: token
                     });
                 }
                 res.status(200).send({

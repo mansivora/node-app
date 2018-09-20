@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const web3 = require('web3');
+
 
 // create express app
 const app = express();
@@ -12,21 +12,20 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // Configuring the database
-const dbConfig = require('./config/database.config.js');
+//const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(dbConfig.url, {
-    useNewUrlParser: true
-}).then(() => {
-    //console.log("Successfully connected to the database");    
-}).catch(err => {
-    console.log('Could not connect to the database. Exiting now...');
-    process.exit();
-});
-
+mongoose.connect(
+    "'mongodb://mansi:" +
+      process.env.MONGO_ATLAS_PW +
+      "@node-api-shard-00-00-fnn4y.mongodb.net:27017,node-api-shard-00-01-fnn4y.mongodb.net:27017,node-api-shard-00-02-fnn4y.mongodb.net:27017/test?ssl=true&replicaSet=node-api-shard-0&authSource=admin&retryWrites=true",
+    {
+        useNewUrlParser:true
+    }
+  );
 
 // define a simple route
 app.get('/', (req, res) => {
