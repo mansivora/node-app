@@ -55,7 +55,7 @@ exports.create = (req, res) => {
      });
     };
 
-    exports.login = (res,req ) => {
+    exports.login = (req,res ) => {
         User.find({email: req.body.email })
         .exec()
         .then(user =>{
@@ -64,7 +64,7 @@ exports.create = (req, res) => {
                     message: "mail not found. User doesn't exist!"
                 });
             }
-            bcrypt.compare(req.body.password, user[0].password, (err,res) =>{
+            bcrypt.compare(req.body.password, user[0].password, (err,result) =>{
                 if(err){
                     return res.status(401).send({
                         message: "Auth Failed"
