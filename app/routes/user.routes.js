@@ -5,7 +5,7 @@ module.exports = (app) => {
     app.post('/signup', account.create);
 
     
-    // Retrieve all Notes
+    // Retrieve all Users
     app.get('/user', account.findAll);
 
     //Login user

@@ -42,7 +42,8 @@ exports.create = (req, res) => {
         });
     } 
 
-    // Retrieve and return all users from the database.
+
+    // Retrieve and return all notes from the database.
     exports.findAll = (req, res) => {
         User.find()
         .then(user => {
@@ -51,9 +52,8 @@ exports.create = (req, res) => {
             res.status(500).send({
                 message: err.message || "Some error occurred while retrieving users."
             });
-        });
+     });
     };
-
 
     exports.login = (res,req ) => {
         User.find({email: req.body.email })
