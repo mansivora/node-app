@@ -3,25 +3,36 @@ const Project = require('../models/createproject.model.js');
 // Create and Save a new project
 exports.create = (req, res) => {
    
-    // Create a Note
-    const project = new Project({
-        tittle: req.body.tittle ,
-        description: req.body.description,
-        remark: req.body.remark,
-        industry: req.body.industry
-    });
-
-     // Save Note in the database
-     project.save()
-     .then(data => {
-         res.send(data);
-     }).catch(err => {
-         res.status(500).send({
-             message: err.message || "Some error occurred while creating the Project."
+  Project.find({tittle:req.body.tittle})
+  .exec()
+  .then(project =>{
+      if(project.length >= 1){
+          res.status(409).send({
+              message: "Project Already exist."
+          });
+      }else{
+          //Create a project
+          const project = new Project({
+            tittle: req.body.tittle ,
+            description: req.body.description,
+            remark: req.body.remark,
+            industry: req.body.industry
+        });
+    
+         // Save Project in the database
+         project.save()
+         .then(data => {
+             res.send(data);
+         }).catch(err => {
+             res.status(500).send({
+                 message: err.message || "Some error occurred while creating the Project."
+             });
          });
-     });
- };
-
+     };
+    });
+};
+    
+ 
 
  
 
