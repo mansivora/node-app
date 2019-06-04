@@ -15,17 +15,23 @@ app.use(bodyParser.json())
 //const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 
+var state = {
+  db: null,
+}
+
 mongoose.Promise = global.Promise;
 
 // Connecting to the database
-mongoose.connect(
-    "'mongodb://mansi:" +
-      process.env.MONGO_ATLAS_PW +
-      "@node-api-shard-00-00-fnn4y.mongodb.net:27017,node-api-shard-00-01-fnn4y.mongodb.net:27017,node-api-shard-00-02-fnn4y.mongodb.net:27017/test?ssl=true&replicaSet=node-api-shard-0&authSource=admin&retryWrites=true",
-    {
-        useNewUrlParser:true
-    }
-  );
+mongoose.connect("mongodb://78.129.229.129:27743/accounts", function(err,db){
+  if (err) throw err;
+  console.log("Database Connected!");
+  state.db = db;
+  
+});
+
+exports.getCollection = function(accounts) {
+  return state.db.collection(accounts);
+};
 
 // define a simple route
 app.get('/', (req, res) => {
@@ -35,6 +41,7 @@ app.get('/', (req, res) => {
 // ........
 
 // Require Notes routes
+require('./app/routes/retrivemail.routes.js')(app);
 require('./app/routes/createproject.routes.js')(app);
 require('./app/routes/user.routes.js')(app);
 // ........
@@ -45,4 +52,6 @@ require('./app/routes/user.routes.js')(app);
 app.listen(3000, () => {
     //console.log("Server is listening on port 3000");
 });
+
+exports = module.exports = app;
 
